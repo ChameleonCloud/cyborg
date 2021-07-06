@@ -23,6 +23,7 @@ DEVICE_QAT = 'QAT'
 DEVICE_NIC = 'NIC'
 DEVICE_SSD = 'SSD'
 
+DEVICE_PERIPHERAL = 'PERIPHERAL'
 
 ARQ_STATES = (ARQ_INITIAL, ARQ_BIND_STARTED, ARQ_BOUND, ARQ_UNBOUND,
               ARQ_BIND_FAILED, ARQ_DELETING) = (
@@ -61,13 +62,16 @@ ARQ_STATES_TRANSFORM_MATRIX = {
 
 # Device type
 DEVICE_TYPE = (DEVICE_GPU, DEVICE_FPGA, DEVICE_AICHIP, DEVICE_QAT, DEVICE_NIC,
-               DEVICE_SSD)
+               DEVICE_SSD, DEVICE_PERIPHERAL)
 
 
 # Attach handle type
+#  'OCI_RUNTIME': Open Container Initiative runtime specc, used by Zun
+#    container driver.
 #  'TEST_PCI': used by fake driver, ignored by Nova virt driver.
-ATTACH_HANDLE_TYPES = (AH_TYPE_PCI, AH_TYPE_MDEV, AH_TYPE_TEST_PCI) = (
-    "PCI", "MDEV", "TEST_PCI")
+ATTACH_HANDLE_TYPES = (
+    AH_TYPE_PCI, AH_TYPE_MDEV, AH_TYPE_OCI_RUNTIME, AH_TYPE_TEST_PCI) = (
+    "PCI", "MDEV", "OCI_RUNTIME", "TEST_PCI")
 
 
 # Control Path ID type
@@ -82,6 +86,7 @@ RESOURCES = {
     "QAT": "CUSTOM_QAT",
     "NIC": "CUSTOM_NIC",
     "SSD": 'CUSTOM_SSD',
+    "PERIPHERAL": "CUSTOM_PERIPHERAL",
 }
 
 

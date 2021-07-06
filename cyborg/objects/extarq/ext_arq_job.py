@@ -211,8 +211,12 @@ class ExtARQJobMixin(object):
     @classmethod
     def bind_notify(cls, instance_uuid, arq_bind_statuses):
         """Notify the bind status to nova."""
-        nova_api = nova_client.NovaAPI()
-        nova_api.notify_binding(instance_uuid, arq_bind_statuses)
+        # TODO(jason): We need to only do this if we're binding on a
+        # Nova instance, as opposed to a Zun container. Probably the ARQ
+        # needs a new model field to store what type of binding it is.
+        if False:
+            nova_api = nova_client.NovaAPI()
+            nova_api.notify_binding(instance_uuid, arq_bind_statuses)
 
     def get_resources_from_device_profile_group(self):
         """parser device profile group."""
