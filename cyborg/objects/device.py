@@ -29,7 +29,8 @@ LOG = logging.getLogger(__name__)
 class Device(base.CyborgObject, object_base.VersionedObjectDictCompat):
     # Version 1.0: Initial version
     # Version 1.1: Add AICHIP, GENERIC type
-    VERSION = '1.1'
+    # Version 1.2: Add PERIPHERAL type
+    VERSION = '1.2'
 
     dbapi = dbapi.get_instance()
 

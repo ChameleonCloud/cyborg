@@ -339,9 +339,13 @@ class ExtARQ(base.CyborgObject, object_base.VersionedObjectDictCompat):
                 bind_action = False
                 extarq.unbind(context)
         if bind_action:
-            nova_api = nova_client.NovaAPI()
-            nova_api.notify_binding(instance_uuid,
-                                    device_profile_name, status)
+            # TODO(jason): We need to only do this if we're binding on a
+            # Nova instance, as opposed to a Zun container. Probably the ARQ
+            # needs a new model field to store what type of binding it is.
+            #nova_api = nova_client.NovaAPI()
+            #nova_api.notify_binding(instance_uuid,
+            #                        device_profile_name, status)
+            pass
 
     def unbind(self, context):
         arq = self.arq

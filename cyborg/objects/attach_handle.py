@@ -27,7 +27,8 @@ LOG = logging.getLogger(__name__)
 @base.CyborgObjectRegistry.register
 class AttachHandle(base.CyborgObject, object_base.VersionedObjectDictCompat):
     # Version 1.0: Initial version
-    VERSION = '1.0'
+    # Version 1.1: Add OCI_RUNTIME attach type
+    VERSION = '1.1'
 
     dbapi = dbapi.get_instance()
 

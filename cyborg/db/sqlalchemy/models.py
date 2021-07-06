@@ -81,7 +81,7 @@ class Device(Base):
 
     id = Column(Integer, primary_key=True)
     uuid = Column(String(36), nullable=False, unique=True)
-    type = Column(Enum('GPU', 'FPGA', 'AICHIP',
+    type = Column(Enum('GPU', 'FPGA', 'AICHIP', 'PERIPHERAL',
                        name='device_type'), nullable=False)
     vendor = Column(String(255), nullable=False)
     model = Column(String(255), nullable=False)
@@ -171,10 +171,11 @@ class AttachHandle(Base):
     in_use = Column(Boolean, default=False)
     attach_type = Column(Enum(constants.AH_TYPE_PCI,
                               constants.AH_TYPE_MDEV,
+                              constants.AH_TYPE_OCI_RUNTIME,
                               constants.AH_TYPE_TEST_PCI,
                          name='attach_type'),
                          nullable=False)
-    attach_info = Column(String(255), nullable=False)
+    attach_info = Column(Text, nullable=False)
 
 
 class DeviceProfile(Base):

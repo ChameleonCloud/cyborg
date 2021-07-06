@@ -28,7 +28,8 @@ from cyborg.objects import fields as object_fields
 class DriverDevice(base.DriverObjectBase,
                    object_base.VersionedObjectDictCompat):
     # Version 1.0: Initial version
-    VERSION = '1.0'
+    # Version 1.1: Add PERIPHERAL type
+    VERSION = '1.1'
 
     fields = {
         'vendor': object_fields.StringField(nullable=False),

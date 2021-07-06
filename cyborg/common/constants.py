@@ -19,21 +19,25 @@ AGENT_TOPIC = 'cyborg-agent'
 DEVICE_GPU = 'GPU'
 DEVICE_FPGA = 'FPGA'
 DEVICE_AICHIP = 'AICHIP'
-
+DEVICE_PERIPHERAL = 'PERIPHERAL'
 
 ARQ_STATES = (ARQ_INITIAL, ARQ_BIND_STARTED, ARQ_BOUND, ARQ_UNBOUND,
               ARQ_BIND_FAILED, ARQ_DELETING) = (
     'Initial', 'BindStarted', 'Bound', 'Unbound', 'BindFailed', 'Deleting')
 
 # Device type
-DEVICE_TYPE = (DEVICE_GPU, DEVICE_FPGA, DEVICE_AICHIP)
+DEVICE_TYPE = (DEVICE_GPU, DEVICE_FPGA, DEVICE_AICHIP, DEVICE_PERIPHERAL)
 
 # Attach handle type
+#  'OCI_RUNTIME': Open Container Initiative runtime specc, used by Zun
+#    container driver.
 #  'TEST_PCI': used by fake driver, ignored by Nova virt driver.
-ATTACH_HANDLE_TYPES = (AH_TYPE_PCI, AH_TYPE_MDEV, AH_TYPE_TEST_PCI) = (
-    "PCI", "MDEV", "TEST_PCI")
+ATTACH_HANDLE_TYPES = (
+    AH_TYPE_PCI, AH_TYPE_MDEV, AH_TYPE_OCI_RUNTIME, AH_TYPE_TEST_PCI) = (
+    "PCI", "MDEV", "OCI_RUNTIME", "TEST_PCI")
 
 # Resource Class
 RESOURCES = {
-    "FPGA": orc.FPGA
+    "FPGA": orc.FPGA,
+    "PERIPHERAL": orc.normalize_name("peripheral"),
 }
