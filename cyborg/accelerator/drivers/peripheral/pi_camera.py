@@ -37,6 +37,11 @@ class PiCameraDriver(BasePeripheralDriver):
                     "Software support for RPi camera found, but camera module "
                     "is not connected or is disabled in BIOS."))
                 return []
+        except FileNotFoundError:
+            LOG.error((
+                f"Failed to get camera status: {USERLAND_DIR}/bin/vcgencmd not "
+                "found"))
+            return []
         except processutils.ProcessExecutionError as exc:
             LOG.error(f"Failed to get camera status: {exc.cmd} failed with {exc.exit_code}")
             LOG.debug(exc.stderr.split("\n"))
