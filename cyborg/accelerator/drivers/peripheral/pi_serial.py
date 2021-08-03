@@ -28,7 +28,7 @@ class PiSerialDriver(BasePeripheralDriver):
         :return: List of Raspberry Pi serial devices
         """
 
-        if os.path.exists(SERIAL_DEVICE):
+        if not os.path.exists(SERIAL_DEVICE):
             LOG.error(f"Could not find expected Serial device at {SERIAL_DEVICE}")
             return []
 
