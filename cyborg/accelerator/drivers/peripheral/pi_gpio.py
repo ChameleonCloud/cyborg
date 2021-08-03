@@ -27,7 +27,7 @@ class PiGPIODriver(BasePeripheralDriver):
         :return: List of Raspberry Pi camera devices
         """
 
-        if os.path.exists(GPIO_DEVICE):
+        if not os.path.exists(GPIO_DEVICE):
             LOG.error(f"Could not find expected GPIO device at {GPIO_DEVICE}")
             return []
 
