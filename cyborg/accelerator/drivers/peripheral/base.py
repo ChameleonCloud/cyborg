@@ -11,6 +11,9 @@
 # WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 # See the License for the specific language governing permissions and
 # limitations under the License.
+import hashlib
+
+from oslo_config import cfg
 from oslo_serialization import jsonutils
 from oslo_utils import dictutils
 
@@ -21,6 +24,7 @@ from cyborg.objects.driver_objects import driver_controlpath_id
 from cyborg.objects.driver_objects import driver_deployable
 from cyborg.objects.driver_objects import driver_device
 
+CONF = cfg.CONF
 
 class BasePeripheralDriver(object):
     def discover(self):
@@ -43,7 +47,8 @@ class BasePeripheralDriver(object):
             driver_device_obj.vendor_board_info = ""
             driver_device_obj.type = constants.DEVICE_PERIPHERAL
             driver_device_obj.stub = False
-            driver_device_obj.controlpath_id = _generate_controlpath_id()
+            driver_device_obj.controlpath_id = (
+                _generate_controlpath_id(peripheral))
             driver_device_obj.deployable_list = _generate_dep_list(peripheral)
             device_list.append(driver_device_obj)
 
@@ -78,24 +83,35 @@ class BasePeripheralDriver(object):
         return []
 
 
-def _generate_controlpath_id():
+def _generate_controlpath_id(peripheral):
     driver_cpid = driver_controlpath_id.DriverControlPathID()
     # It is almost certain that not all peripherals will be PCI.
     # This controlpath object isn't really used yet though.
+    # NOTE(jason): The most important part is that this is at least unique
+    # across types of devices; set() is used for comparisons in the conductor,
+    # which will drop duplicates. So, two peripherals exposed from a single
+    # host must have different control path IDs.
     driver_cpid.cpid_type = "PCI"
-    driver_cpid.cpid_info = jsonutils.dumps({
-        "domain": "",
-        "bus": "",
-        "device": "",
-        "function": "",
-    })
+    pci_info = peripheral.get("pci")
+    if not pci_info:
+        # Create random values to prevent collisions; as this is not a real
+        # PCI device (and won't be used as such) these values will not matter.
+        desc = (
+            hashlib.sha256(peripheral.get("name").encode("utf-8")).hexdigest())
+        pci_info = {
+            "domain": "0000",
+            "bus": desc[:2],
+            "device": desc[2:4],
+            "function": desc[4],
+        }
+    driver_cpid.cpid_info = jsonutils.dumps(pci_info)
     return driver_cpid
 
 
 def _generate_dep_list(peripheral):
     dep_list = []
     driver_dep = driver_deployable.DriverDeployable()
-    driver_dep.name = peripheral.get("name")
+    driver_dep.name = ".".join([CONF.host, peripheral.get("name")])
     driver_dep.driver_name = peripheral.get(
         "driver_name",
         peripheral.get("vendor", "unknown")
