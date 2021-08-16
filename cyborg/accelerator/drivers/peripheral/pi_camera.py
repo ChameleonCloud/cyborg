@@ -64,7 +64,8 @@ class PiCameraDriver(BasePeripheralDriver):
                 "linux": {
                     "devices": [
                         {"type": "c", "path": "/dev/vchiq"},
-                        {"type": "c", "path": "/dev/vcsm"},
+                        {"type": "c", "path": "/dev/vc-mem"},
+                        {"type": "c", "path": "/dev/vcsm-cma"},
                     ],
                 }
             }
