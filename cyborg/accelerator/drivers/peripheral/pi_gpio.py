@@ -49,7 +49,10 @@ class PiGPIODriver(BasePeripheralDriver):
                         {"type": "c", "path": GPIO_DEVICE},
                     ],
                     "capabilities": {
+                        "permitted": ["CAP_SYS_RAWIO"],
                         "effective": ["CAP_SYS_RAWIO"],
+                        "inherited": ["CAP_SYS_RAWIO"],
+                        "bounding": ["CAP_SYS_RAWIO"],
                     },
                 },
             }
